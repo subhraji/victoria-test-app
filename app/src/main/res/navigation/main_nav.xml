@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_nav"
+    app:startDestination="@id/dashBoardFragment">
+
+    <fragment
+        android:id="@+id/dashBoardFragment"
+        android:name="com.example.testapp.ui.fragment.DashBoardFragment"
+        android:label="DashBoardFragment" />
+    <fragment
+        android:id="@+id/movieDetailsFragment"
+        android:name="com.example.testapp.ui.fragment.MovieDetailsFragment"
+        android:label="MovieDetailsFragment" />
+</navigation>
