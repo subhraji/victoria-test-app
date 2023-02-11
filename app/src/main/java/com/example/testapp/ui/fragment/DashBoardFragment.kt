@@ -1,6 +1,5 @@
 package com.example.testapp.ui.fragment
 
-import android.R.attr.data
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,6 +10,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.testapp.R
 import com.example.testapp.adapter.GetMoviesAdapter
@@ -18,16 +19,15 @@ import com.example.testapp.databinding.FragmentDashBoardBinding
 import com.example.testapp.model.pojo.get_movies.Result
 import com.example.testapp.model.repository.Outcome
 import com.example.testapp.utils.Constants
+import com.example.testapp.utils.ItemClickListener
 import com.example.testapp.viewmodel.GetMoviesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class DashBoardFragment : Fragment() {
+class DashBoardFragment : Fragment(), ItemClickListener {
     private lateinit var binding: FragmentDashBoardBinding
-
     private val mGetMoviesViewModel: GetMoviesViewModel by viewModels()
-
     private var param1: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +55,7 @@ class DashBoardFragment : Fragment() {
         //observe
         getMoviesObserve()
 
+        binding.progressBar.visibility = View.VISIBLE
         mGetMoviesViewModel.getMovies("Bearer ${Constants.TOKEN}")
     }
 
@@ -62,6 +63,7 @@ class DashBoardFragment : Fragment() {
         mGetMoviesViewModel.response.observe(viewLifecycleOwner, Observer { outcome ->
             when(outcome){
                 is Outcome.Success ->{
+                    binding.progressBar.visibility = View.GONE
                     if(outcome.data != null){
                         fillTestRecycler(outcome.data?.results!!.toMutableList())
                         mGetMoviesViewModel.navigationComplete()
@@ -71,6 +73,7 @@ class DashBoardFragment : Fragment() {
                 }
                 is Outcome.Failure<*> -> {
                     Toast.makeText(activity,outcome.e.message, Toast.LENGTH_SHORT).show()
+                    binding.progressBar.visibility = View.GONE
 
                     outcome.e.printStackTrace()
                     Log.i("status",outcome.e.cause.toString())
@@ -86,11 +89,15 @@ class DashBoardFragment : Fragment() {
     }
 
     private fun fillTestRecycler(list: MutableList<Result>) {
-        val gridLayoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        val gridLayoutManager = GridLayoutManager(activity, 2,LinearLayoutManager.VERTICAL, false)
         binding.moviesRecycler.apply {
             layoutManager = gridLayoutManager
-            adapter = GetMoviesAdapter(list,requireActivity())
+            adapter = GetMoviesAdapter(list,requireActivity(),this@DashBoardFragment)
         }
+    }
+
+    override fun onClick(view: View, id: Int) {
+        findNavController().navigate(R.id.movieDetailsFragment)
     }
 
 
