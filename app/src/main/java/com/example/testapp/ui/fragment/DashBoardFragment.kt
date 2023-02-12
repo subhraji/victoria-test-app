@@ -28,12 +28,10 @@ import dagger.hilt.android.AndroidEntryPoint
 class DashBoardFragment : Fragment(), ItemClickListener {
     private lateinit var binding: FragmentDashBoardBinding
     private val mGetMoviesViewModel: GetMoviesViewModel by viewModels()
-    private var param1: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString("")
         }
     }
 
@@ -97,7 +95,8 @@ class DashBoardFragment : Fragment(), ItemClickListener {
     }
 
     override fun onClick(view: View, id: Int) {
-        findNavController().navigate(R.id.movieDetailsFragment)
+        val directions = DashBoardFragmentDirections.actionDashBoardFragmentToMovieDetailsFragment(id)
+        findNavController().navigate(directions)
     }
 
 

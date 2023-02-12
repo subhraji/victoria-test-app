@@ -7,9 +7,17 @@
     <fragment
         android:id="@+id/dashBoardFragment"
         android:name="com.example.testapp.ui.fragment.DashBoardFragment"
-        android:label="DashBoardFragment" />
+        android:label="DashBoardFragment" >
+        <action
+            android:id="@+id/action_dashBoardFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/movieDetailsFragment"
         android:name="com.example.testapp.ui.fragment.MovieDetailsFragment"
-        android:label="MovieDetailsFragment" />
+        android:label="MovieDetailsFragment" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
 </navigation>

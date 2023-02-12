@@ -24,6 +24,7 @@ class LoginActivity : AppCompatActivity() {
             if(email == "test@gmail.com" && password == "12345"){
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
+                finish()
             }else{
                 Toast.makeText(this,"Wrong Credential.", Toast.LENGTH_SHORT).show()
             }
